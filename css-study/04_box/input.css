@@ -1,0 +1,58 @@
+.settings {
+    width: 450px;
+    margin: 50px auto;
+    font-size: 14px;
+}
+
+.settings h1 {
+    margin-bottom: 30px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.item {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+/* 속성 선택자 - [속성='값'] 으로 선택할 수 있다 */
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+}
+
+/* input이 선택(클릭, tab으로)됬을때 */
+input:focus {
+    outline: none;
+    border: 1px solid #999;
+}
+
+/* 태그 속성 */
+input:disabled {
+    background-color: #fff;
+    color: #999;
+    /* 
+    자주쓰는 cursor 값 
+    1. pointer - 검지손가락으로 누르는 모양
+    2. default - 기본 마우스
+    3. not-allowed - 금지 모양
+    */
+    cursor: not-allowed;
+}
