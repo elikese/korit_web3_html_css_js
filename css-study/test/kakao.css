@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    /* 높이 === 브라우저화면 */
+    height: 100vh;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page {
+    width: 540px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
