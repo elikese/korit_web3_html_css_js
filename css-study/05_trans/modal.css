@@ -48,6 +48,9 @@
     padding: 20px;
     background-color: white;
     border-radius: 8px;
+
+    transform: translateY(50px);
+    transition: transform 0.3s ease-in-out;
 }
 
 .close-btn {
@@ -68,4 +71,12 @@ modal-toggle id를 가진 checkbox가 check가 되면
 #modal-toggle:checked ~ .modal-bg {
     opacity: 1;
     pointer-events: auto;
+}
+
+/* modal창(modal에 transition 부여하세요)이 
+아래에서 위로 올라오는 효과
+transform으로 y축이 움직였다 + -> 0
+*/
+#modal-toggle:checked ~ .modal-bg .modal {
+    transform: translateY(0px);
 }
