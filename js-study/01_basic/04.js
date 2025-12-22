@@ -42,15 +42,19 @@ result = add3(10, 20);
 
 // func가 콜백함수
 const calc = (number, func) => {
+    // number: 3
+    // func: square
+    // square(3) -> 9
     return func(number);
 }
 
 const square = (num) => {
+    // num: 3
     return num * num;
 }
 
 // square와 square()는 다름
-result = calc(2, square);
+result = calc(3, square);
 console.log(result);
 
 result = calc(3, (num) => {
