@@ -71,7 +71,7 @@ for (let entry of entries) {
     console.log(`key: ${entry[0]}, val: ${entry[1]}`);
 }
 
-// 비구조할당
+// 비 구조할당
 for (let [key, value] of entries) {
     console.log(`key: ${key}, val: ${value}`);
 }
