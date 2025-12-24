@@ -67,7 +67,7 @@ const c = (value) => {
 }
 
 // promise 객체 리턴
-a(10) // then -> promiseA의 상태가 fullfilled가 되었을때 실행
+a(10)
     .then((resultA) => {
         console.log(`a결과: ${resultA}`);
         return b(resultA);
@@ -77,7 +77,7 @@ a(10) // then -> promiseA의 상태가 fullfilled가 되었을때 실행
         return c(resultB);
     })
     .then((resultC) => {
-        console.log(`b결과: ${resultC}`);
+        console.log(`c결과: ${resultC}`);
     })
     .catch((error) => {
         console.log(`에러: ${error}`);
