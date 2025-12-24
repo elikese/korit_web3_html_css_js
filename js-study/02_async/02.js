@@ -22,7 +22,7 @@ let c = (value) => {
     setTimeout(() => {
         console.log(`결과: ${value}`);
     }, 2000);
-}
+};
 
 // let result = a(10);
 // result = b(result);
@@ -45,14 +45,14 @@ b = (v, callback) => {
     setTimeout(() => {
         callback(v + 5);
     }, 1000);
-}
+};
 
 c = (v) => {
     console.log("c 호출!");
     setTimeout(() => {
         console.log(`결과: ${v}`);
     }, 2000);
-}
+};
 
 // 비동기와 동기가 혼재되어있을때 
 // 콜백으로 순서를 제어하는 방법
