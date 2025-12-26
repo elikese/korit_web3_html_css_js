@@ -38,6 +38,7 @@ promise1
 
 const a = (value) => {
     console.log("a 호출!");
+    // new Promise()로 promise 객체가 생성되는 순간, 내부의 함수는 실행된다.
     const promiseA = new Promise((resolve) => {
         setTimeout(() => {
             resolve(value + 5);

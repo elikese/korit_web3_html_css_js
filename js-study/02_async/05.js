@@ -1,0 +1,25 @@
+// https://jsonplaceholder.typicode.com/posts/{id}
+
+const getPostById = (postId) => {
+    const url = `https://jsonplaceholder.typicode.com/posts/${postId}`;
+    const postPromise = fetch(url)
+            .then((result) => {
+                // .json() : JSON 문자열 -> js객체 변환(webAPI)
+                return result.json(); // 결과도 promise
+            });
+    return postPromise;
+}
+
+getPostById(2)
+    .then((post) => {
+        console.log("데이터 수신성공!")
+        const { title, body } = post;
+        console.log(`${title} : ${body}`);
+    })
+    .catch((e) => {
+        console.log(e.message);
+    });
+
+// https://jsonplaceholder.typicode.com/users/{id}
+// fetch -> json을 js객체화 -> 함수호출!
+// -> 출력창에 수신해온 user의 정보 중 username , email만 출력!
