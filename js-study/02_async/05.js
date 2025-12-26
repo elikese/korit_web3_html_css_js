@@ -23,3 +23,30 @@ getPostById(2)
 // https://jsonplaceholder.typicode.com/users/{id}
 // fetch -> json을 js객체화 -> 함수호출!
 // -> 출력창에 수신해온 user의 정보 중 username , email만 출력!
+
+const getUserInfoById = (userId) => {
+    const url = `https://jsonplaceholder.typicode.com/users/${userId}`;
+    const userPromise = fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((user) => {
+            const userInfo = {
+                username: user.username,
+                email: user.email
+            }
+            return userInfo;
+        });
+    
+    return userPromise;
+}
+
+getUserInfoById(1)
+    .then((info) => {
+        const {username, email} = info;
+        console.log(`username: ${username}`);
+        console.log(`email: ${email}`);
+    })
+    .catch((error) => {
+        console.log(error.message);
+    });
