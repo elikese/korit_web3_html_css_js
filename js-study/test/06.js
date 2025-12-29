@@ -36,3 +36,4 @@ todos = await Promise.all(todoPromises);
 console.log(todos.map((todo) => {
     return todo.title;
 }));
+
