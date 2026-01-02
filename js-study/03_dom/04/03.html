@@ -70,27 +70,76 @@
         const product = products[idx];
 
         // 주문내역을 cart에 저장
-        cart.push({
-            name: product.name,
-            price: product.price,
-            quantity: qty
+
+        // 만약에 기존 cart에 상품이 있었다면, qty 누적합
+        const item = cart.find((item) => {
+            return item.name === product.name;
         });
 
-        console.log(cart);
-        // 장바구니영역 렌더링()
+        if (item) { // truthy 일때 -> qty누적합
+            // cart안에 있는 item의 수량을 바꿔줘야함
+            cart = cart.map((item) => {
+                // 주문한상품이름(product.name)과 카트에서 꺼내온 이름이 같다면
+                if(item.name === product.name) {
+                    return { // 기존값은 그대로쓰고, 수량만 누적
+                        ...item,
+                        quantity: item.quantity + qty
+                    }
+                } // 아니라면 그대로
+                return item;
+            });
+
+        } else { // falsy일때 -> 새로추가
+            // 없다면 새로 추가
+            cart.push({
+                name: product.name,
+                price: product.price,
+                quantity: qty
+            });
+        }
+        
+        renderCart();
     });
 
+    // 장바구니의 값이 바뀌면 호출되어야함
     const renderCart = () => {
         let myHtml = "";
         // cart
-        // <li>상품이름 - ~개 - 총가격</li>
+        // <li>상품이름 - ~개 - 총가격</li> cart에 담긴만큼 반복
+        for(let item of cart) {
+            const {name, quantity, price} = item;
+            myHtml += `
+                <li>
+                    <p>${name} - ${quantity}개</p>
+                    <div>총가격: ${price * quantity}원</div>
+                </li>
+            `;
+        }
         
-
+        cartUl.innerHTML = myHtml;
     }
 
+    // localStorage 저장
+    saveBtn.addEventListener("click", () => {
+        // js객체 -> json 변환(string)
+        const jsonCart = JSON.stringify(cart);
+        localStorage.setItem("cart", jsonCart);
 
+        alert("저장되었습니다.");
+        cartUl.innerHTML = "";
+    });
 
-
+    // localStorage 불러오기
+    loadBtn.addEventListener("click", () => {
+        const jsonCart = localStorage.getItem("cart");
+        if(!jsonCart) { // 저장한게 없다면
+            alert("저장된 데이터가 존재하지 않습니다");
+            return;
+        }
+        // 전역 cart 변수에 대입
+        cart = JSON.parse(jsonCart);
+        renderCart();
+    });
 
     productRender();
 </script>
