@@ -50,13 +50,53 @@
     const BASE_URL = "https://fakestoreapi.com/products";
 
     // fetch로 데이터들을 productDataList에 담는 함수
-    const loadProducts = () => {
-        
+    const loadProducts = async () => {
+        const response = await fetch(BASE_URL);
+        const result = await response.json();
+
+        // 받아온 데이터를 상태변수에 저장
+        productDataList = result;
+
+        // 동기적으로 렌더링()
+        renderProducts(productDataList);
     }
 
     // productDataList 데이터들을 기반으로 렌더링하는 함수
+    const renderProducts = (productDataList) => {
+        // 기존에 있던 HTML을 삭제(중복 렌더링방지)
+        productList.innerHTML = "";
+
+        let myHtml = "";
+        // 상품 하나당 카드 하나 만들어서 붙혀줌
+        for(let product of productDataList) {
+            const cardHTML = createProductCardHTML(product);
+            myHtml += cardHTML;
+        }
+
+        productList.innerHTML = myHtml;
+    }
 
     
+    // HTML 조립하는 함수
+    const createProductCardHTML = (product) => {
+        const { image, title, price, id } = product;
+        // 버튼을 누르면, product의 id를 추출할 수 있게
+        // 전역에 있는 productDataList에서 id로 해당 상품을 특정해서
+        // localStorage에 담아줄겁니다.
+        const html = `
+            <div class="product-card">
+                <div class="image-box">
+                    <img src="${image}" alt="${title}" />
+                </div>
+                <h3 class="title">${title}</h3>
+                <p class="price">${price}</p>
+                <button data-id="${id}">상품담기</button>
+            </div>
+        `;
+        return html;
+    }
+    
+    loadProducts();
 
 </script>
 </html>
