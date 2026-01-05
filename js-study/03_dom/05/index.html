@@ -215,9 +215,48 @@
             // 현재페이지
             currentPage = page; // 전역변수 수정
             loadPosts(currentPage); // 재랜더링
-        })
+        });
+
+        // 게시글 상세보기 클릭
+        postList.addEventListener("click", async (e) => {
+            const target = e.target;
+            // 클릭한 게시글의 data-id
+            // dataset.id
+            const id = target.dataset.id;
+            if(!id) {
+                return;
+            }
+
+            // 게시글 리스트를 숨기고, 상세페이지 보이기
+            postListContainer.classList.remove("active");
+            postDetailContainer.classList.add("active");
+            
+            // 로딩표시(await 동안보일것)
+            // -> spinner사용이 일반적이다!
+            detailTitle.innerText = "제목을 불러오고 있습니다..";
+            detailId.innerText = "";
+            detailUserId.innerText = "";
+            detailBody.innerText = "게시글을 불러오고 있습니다..";
+
+            // 상세 게시글 요청
+            const response = await fetch(`${BASE_URL}/${id}`); // 문자열
+            const post = await response.json(); // js객체로 변환
+
+            // 데이터 출력
+            detailTitle.innerText = post.title;
+            detailId.innerText = post.id;
+            detailUserId.innerText = post.user_id;
+            detailBody.innerText = post.body;
+        });
+
+        // 목록으로 돌아가기 버튼
+        // backBtn을 누르면, 디테일컨테이너가 사라지고,
+        // 포스트리스트가 나타나게끔 구현!
+        backBtn
 
         
+        
+
         loadPosts(1);
     </script>
 </body>
