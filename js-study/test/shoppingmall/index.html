@@ -239,6 +239,39 @@
             return;
         }
         console.log(clickItemId);
+
+        // 로컬스토리지에서 데이터를 가져와서
+        let savedData = localStorage.getItem("cart");
+        if (!savedData) {
+            savedData = [];
+        } else {
+            savedData = JSON.parse(savedData);
+        }
+        // 해당 id의 상품을 특정 - js 객체
+        const targetItem = savedData.find((item) => {
+            return item.id === clickItemId;
+        });
+
+        if (!targetItem) {
+            return;
+        }
+        // plus클래스 -> 객체.count + 1
+        const isPlus = target.classList.contains("plus");
+        if(isPlus) {
+            targetItem.count += 1;
+        }
+        // minus클래스 -> 객체.count - 1
+        const isMinus = target.classList.contains("minus");
+        // count가 음수가 되면 x
+
+        // delete-btn -> cart에서 해당객체를 삭제
+        const isDelete = target.classList.contains("delete-btn");
+        // savedData에서 targetItem의 index를 찾아서
+        // splice로 삭제
+
+        // 로컬스토리지에 다시 저장
+        // 렌더링()
+        
     })
 
     loadProducts();
