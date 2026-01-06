@@ -32,7 +32,7 @@
                 <h2>장바구니</h2>
                 <button class="close-btn">X</button>
             </div>
-            <ul>
+            <ul class="cart-list">
                 <!-- localStorage에 있는 데이터로 렌더링 -->
             </ul>
             <div class="modal-footer">
@@ -175,8 +175,8 @@
             <li class="cart-item">
                 <img src="${image}"/>
                 <div class="cart-info">
-                    <p>${title}</p>
-                    <p>$${price}</p>
+                    <p class="title">${title}</p>
+                    <p class="price">$${price}</p>
                     <div class="quantity">
                         <button class="minus" data-id="${id}">-</button>
                         <span>${count}</span>
@@ -199,7 +199,6 @@
             cartData = JSON.parse(cartData);
         }
 
-        cartList.innerHTML = ""; // 기존 장바구니 목록 초기화
 
         let myHtml = "";
         for(let item of cartData) {
@@ -223,10 +222,24 @@
         btn.addEventListener("click", () => {
             // 모달이 사라지게
             modalOverlay.classList.add("hidden");
-        })
+        });
     }
 
-    
+    // 장바구니 내부 이벤트
+    cartList.addEventListener("click", (e) => {
+        // 1. ul에서 target.dataset.id로 li를 특정
+        // 2. class이름으로 어떤버튼인지 특정
+        const target = e.target;
+
+        let clickItemId = target.dataset.id;
+        clickItemId = parseInt(clickItemId);
+        // 버튼들에만 id를 심어놨음
+        // id가 없다면 return
+        if (!clickItemId) {
+            return;
+        }
+        console.log(clickItemId);
+    })
 
     loadProducts();
 
