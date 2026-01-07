@@ -219,8 +219,6 @@ main {
     border-top: 1px solid #eee;
 }
 
-
-
 .hidden {
     /* modalOverlay에도 display를 지정하는 속성이 있음 */
     /* 가장 아래에 배치된 display 속성이 덮어쓴다 */
