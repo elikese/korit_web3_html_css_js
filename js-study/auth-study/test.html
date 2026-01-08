@@ -6,26 +6,59 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>테스트</h1>
-    <input type="text">
+    <h2>게시글 검색</h2>
+    <input type="text" id="titleKeyword" placeholder="제목검색">
+    <input type="text" id="contentKeyword" placeholder="내용검색">
+    <button id="searchBtn">검색</button>
 </body>
 <script>
-    import {GoogleGenAI} from "@google/genai"
+    const titleKeywordInput = document.querySelector("#titleKeyword");
+    const contentKeywordInput = document.querySelector("#contentKeyword");
+    const searchBtn = document.querySelector("#searchBtn");
 
-    const ai = new GoogleGenAI({});
-    const input = document.querySelector("input");
-    const prompt = input.value
+    const handleSearchClick = async () => {
+        const titleKeyword = titleKeywordInput.value;
+        const contentKeyword = contentKeywordInput.value;
 
-    
+        const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) {
+            alert("로그인 하세요")
+            return;
+        }
 
+        const endPoint = "http://localhost:8080/post/search";
+        const url = `${endPoint}?titleKeyword=${titleKeyword}&contentKeyword=${contentKeyword}`;
 
-    const main = async () => {
-        const res = await ai.models.generateContent({
-            model: "gemini-3-falsh-preview",
-            contents: prompt
-        });
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                credentials: "include"
+            });
 
+            // 인증만료
+            if (res.status === 401) {
+                // {"error": "UNAUTHORIZED"}
+                const errorObj = await res.json()
+                throw new Error(errorObj);
+            }
+
+            if (!res.ok) {
+                const errorMsg = await res.text();
+                throw new Error(errorMsg);
+            }
+            // [{title:"", content:""},{}...{}]
+            const postList = await res.json();
+            console.log(postList);
+        } catch(error) {
+            // axios 라이브러리에서 refresh 자동 재요청
+            console.log(error);
+        }
         
     }
+
+    searchBtn.addEventListener("click", handleSearchClick)
 </script>
 </html>

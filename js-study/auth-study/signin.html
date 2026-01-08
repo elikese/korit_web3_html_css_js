@@ -16,7 +16,7 @@
         <div class="form-group">
             <label for="password">패스워드</label>
             <input type="password" id="password" placeholder="비밀번호 입력">
-            <p class="error-message" id="error">테스트</p>
+            <p class="error-message" id="error"></p>
         </div>
         <button id="loginBtn" class="btn">로그인</button>
         <button id="refreshBtn" class="btn">리프레쉬</button>
@@ -32,13 +32,86 @@
 
     const loginReq = async () => {
         
-        const reqDto = {
-            username: "", // 입력값
-            password: "" // 입력값
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        let reqDto = {
+            username: username, // 입력값
+            password: password // 입력값
         }
+        const endPoint = "http://localhost:8080/auth/signin";
+
+        reqDto = JSON.stringify(reqDto);
+
+        try {
+            const res = await fetch(endPoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: reqDto,
+                credentials: "include" // 응답으로 쿠키를 내려받겠다
+            });
+
+            // response 객체의 ok -> 응답코드가 200대면 ok가 true
+            // 200대가 아니면 ok가 false
+            if (!res.ok) {
+                const errorMsg = await res.text();
+                // 400코드가 내려와도 catch() 예외로 생각을 안함
+                // catch에 에러들을 모두 모아줘야함
+                throw new Error(errorMsg);
+            }
+
+
+            // res.json()
+            // [] or {} js객체로 변환(promise 객체에 resolve 되어있는)
+            
+            // res.text()
+            // 문자열을 그대로 받아온다(promise 객체에 resolve 되어있는)
+            const accessToken = await res.text();
+            
+            // 로컬스토리지에 저장
+            localStorage.setItem("accessToken", accessToken);
+
+            alert("로그인 성공!");          
+        } catch (error) {
+            const { message } = error;
+            // 로그인 실패시
+            // p태그에 로그인실패 메세지를 넣어주세요!
+            errorMsgTag.innerText = message;
+            alert(message);
+        }
+        
     };
 
-    loginBtn.addEventListener("click", loginReq)
+    const refeshReq = async () => {
+        const endpoint = "http://localhost:8080/auth/refresh";
+        try {
+            // 1. fetch() , 응답
+            const res = await fetch(endpoint, {
+                method: "POST",
+                credentials: "include"
+            });
 
+            if(!res.ok) {
+                const errorMsg = await res.text();
+                throw new Error(errorMsg);
+            }
+
+            // 2. 새로운 accessToken을 localStorage에 set
+            const newAccessToken = await res.text();
+            localStorage.setItem("accessToken", newAccessToken);
+            console.log(newAccessToken);
+
+            // 3. 토큰갱신성공! alert
+            alert("토큰갱신성공!");
+
+        } catch (error) {
+            errorMsgTag.innerText = error.message;
+        }
+    }
+
+    loginBtn.addEventListener("click", loginReq)
+    refreshBtn.addEventListener("click", refeshReq)
 </script>
 </html>
