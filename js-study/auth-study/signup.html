@@ -95,20 +95,9 @@
                 }
                 */
 
-                const errorMap = {};
+                let errorMap = {};
                 for (let errorObj of errorResData) {
-                    // { username: 어쩌고}
-                    let entries = Object.entries(errorObj);
-                    // [["username", "어쩌고"]]
-                    entries = entries[0]
-                    // ["username", "어쩌고"]
-                    // 비구조 할당
-                    const [field, message] = entries;
-                    // js 객체에 필드 추가
-                    // 객체.필드명 = 필드값
-                    // 필드명에 변수에 담긴 값을 쓰고싶을땐?
-                    // 객체[변수] = 필드값
-                    errorMap[field] = message;
+                    errorMap = {...errorMap, ...errorObj};
                 }
 
                 const errorFields = Object.keys(errorMap);
